@@ -1,119 +1,217 @@
-# eShop App
+# E-Shop
 
-## Overview
-
-Welcome to **eShop**, a modern e-commerce application for tech enthusiasts. Our platform is designed to provide a seamless shopping experience for customers while integrating cryptocurrency payments to minimize transaction fees.
+E-Shop is a full-stack e-commerce application designed for selling tech gadgets. It provides a seamless experience for users to browse, purchase, and pay with cryptocurrencies while enabling administrators to manage products and user data efficiently. The application follows a modern MERN (MongoDB, Express.js, React.js, Node.js) architecture.
 
 ---
 
-## Key Features
+## Table of Contents
 
-- **Product Catalog**: Browse through a wide range of tech gadgets.
-- **Cryptocurrency Payments**: Pay using Bitcoin, Ethereum, or other popular cryptocurrencies.
-- **User Authentication**:
-  - Secure signup and login process.
-  - Email confirmation upon account creation.
-- **Profile Management**:
-  - Update profile photos.
-  - Edit personal details.
-- **State Management**:
-  - Efficiently managed using Zustand.
-- **Responsive Design**: Optimized for desktop and mobile devices.
+- [E-Shop](#e-shop)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+    - [Other Tools](#other-tools)
+  - [Setup Instructions](#setup-instructions)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+  - [Environment Variables](#environment-variables)
+  - [Folder Structure](#folder-structure)
+  - [Key Functionalities](#key-functionalities)
+    - [User Features](#user-features)
+    - [Admin Features](#admin-features)
+    - [Miscellaneous](#miscellaneous)
+  - [API Documentation](#api-documentation)
+  - [Deployment](#deployment)
+  - [Future Enhancements](#future-enhancements)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ---
 
-## Technology Stack
+## Features
+
+- **User Authentication**: Secure sign-up, login, and logout functionalities.
+- **Cryptocurrency Payments**: Integrated crypto payment gateway to minimize transaction fees.
+- **Product Management**: Add, update, and delete products (admin-only).
+- **Profile Management**: Users can upload and update profile pictures with real-time updates.
+- **Responsive Design**: Fully responsive UI optimized for all devices.
+- **Email Notifications**: HTML-styled confirmation emails for signups.
+
+---
+
+## Tech Stack
 
 ### Frontend
 
-- **React.js**: For building interactive user interfaces.
-- **Zustand**: State management.
+- React.js with Zustand for state management
+- Tailwind CSS for styling
+- Axios for API communication
 
 ### Backend
 
-- **Node.js**: Server-side runtime.
-- **Express.js**: Backend framework.
-- **MongoDB**: Database for storing user and product data.
-- **Mongoose**: ORM for MongoDB.
+- Node.js with Express.js
+- MongoDB with Mongoose ORM
 
-### Others
+### Other Tools
 
-- **Multer**: For handling profile photo uploads.
-- **Cookies**: For managing user session data.
+- Multer for file uploads
+- JWT for secure authentication
+- Nodemailer for email notifications
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js >= 16.x
+- MongoDB >= 5.x
+- Crypto payment API credentials
+- npm or yarn package manager
+
+### Steps
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/your-username/e-shop.git
+   cd e-shop
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   npm install
+   cd client && npm install
+   ```
+
+3. **Set Up Environment Variables**:
+
+   - Create a `.env` file in the root directory and populate it using the [Environment Variables](#environment-variables) section.
+
+4. **Run the Application**:
+
+   - Start the backend server:
+     ```bash
+     npm run server
+     ```
+   - Start the frontend development server:
+     ```bash
+     cd client && npm start
+     ```
+
+5. **Access the App**:
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Environment Variables
+
+Add the following variables to your `.env` file:
+
+```
+# Backend
+MONGO_URI=<your-mongo-db-uri>
+JWT_SECRET=<your-jwt-secret>
+SMTP_HOST=<your-smtp-host>
+SMTP_PORT=<your-smtp-port>
+SMTP_USER=<your-email-username>
+SMTP_PASS=<your-email-password>
+
+# Crypto API
+CRYPTO_API_KEY=<your-crypto-api-key>
+```
+
+---
+
+## Folder Structure
+
+```
+E-Shop/
+├── client/               # Frontend source code
+├── server/               # Backend source code
+├── uploads/              # Directory for uploaded files
+├── .env                  # Environment variables
+├── package.json          # Project metadata
+├── README.md             # Project documentation
+```
 
 ---
 
 ## Key Functionalities
 
-### Cryptocurrency Payments
+### User Features
 
-To address high transfer fees from traditional payment systems, eShop supports cryptocurrency transactions. This integration is beginner-friendly and aims to make tech gadgets more accessible worldwide.
+- Browse products
+- Add items to the cart
+- Secure checkout with cryptocurrency payments
 
-### User Signup Confirmation
+### Admin Features
 
-Upon registration, users receive a confirmation email styled with a blue, white, and black color scheme. The email is modularized, making the email functionality reusable across the app.
+- Product management (CRUD operations)
+- View and manage orders
 
-### Profile Photo Management
+### Miscellaneous
 
-- Existing profile photos are deleted when a user uploads a new one.
-- Updated file names are stored in the database.
-
-### State Management with Zustand
-
-- Zustand checks cookies to validate user details and keeps the state synchronized on every page load.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- **Node.js** and **npm** installed.
-- MongoDB server running locally or in the cloud.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/eshop.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd eshop
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-### Running the Application
-
-1. Start the backend server:
-   ```bash
-   npm run server
-   ```
-2. Start the frontend:
-   ```bash
-   npm run client
-   ```
-3. Open the application in your browser at `http://localhost:3000`.
+- Profile picture uploads using Multer
+- Cookie-based user session management
+- Zustand-based global state management for seamless user experience
 
 ---
 
-## Roadmap
+## API Documentation
 
-- Add support for more cryptocurrencies.
-- Implement advanced search and filtering for products.
-- Introduce a subscription-based model for premium users.
+The API documentation is available in the `server/docs` directory. Use Postman or any API testing tool to explore endpoints. Example endpoints:
+
+- **User Authentication**:
+
+  - POST `/api/auth/signup`
+  - POST `/api/auth/login`
+
+- **Product Management**:
+
+  - GET `/api/products`
+  - POST `/api/products` (Admin only)
+
+- **Order Management**:
+  - POST `/api/orders`
 
 ---
 
-## Contribution
+## Deployment
 
-We welcome contributions! Feel free to fork the repository and create pull requests. Ensure your code follows the project's guidelines and is thoroughly tested.
+1. **Backend Deployment**:
+
+   - Deploy on a Node.js hosting platform (e.g., AWS, Heroku, or Vercel).
+
+2. **Frontend Deployment**:
+
+   - Build the React app:
+     ```bash
+     npm run build
+     ```
+   - Deploy the build folder to a static hosting service (e.g., Netlify or Vercel).
+
+3. **Configure Environment Variables** on the hosting platform.
+
+---
+
+## Future Enhancements
+
+- Add support for multiple payment methods.
+- Implement product reviews and ratings.
+- Enhance admin dashboard with analytics and insights.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with detailed explanations for changes.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
