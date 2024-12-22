@@ -7,6 +7,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
 	const [username, setUsername] = useState(""); // State for username
 	const [password, setPassword] = useState(""); // State for password
+	// State to hold any error messages
+	const [error, setError] = useState("");
 	const { login } = useAuthStore((state) => state);
 	const { syncCartToDatabase } = useCartStore(
 		(state) => state
@@ -29,26 +31,26 @@ const Login = () => {
 				}
 			);
 
-			// Check if the response is successful
-			if (!response.ok) {
-				throw new Error("Failed to login");
-			}
-
 			// convert response to JSON
 			const data = await response.json();
+			// console.log(data);
+			// Check if the response is successful
+			if (response.ok) {
+				// Store user data in the Zustand store
+				await login(data);
+				await syncCartToDatabase();
 
-			// Store user data in the Zustand store
-			await login(data);
-			await syncCartToDatabase();
+				// Redirect to home page and scroll to the top
+				navigate("/profile");
+				window.scrollTo(0, 0); // Scrolls to the top of the page
 
-			// Redirect to home page and scroll to the top
-			navigate("/profile");
-			window.scrollTo(0, 0); // Scrolls to the top of the page
-
-			alert("Login successful");
+				// alert("Login successful");
+			} else {
+				setError(data.message);
+			}
 		} catch (error) {
 			console.error("Login failed:", error.message);
-			alert("Login failed");
+			// alert("Login failed");
 		}
 	};
 
@@ -58,6 +60,11 @@ const Login = () => {
 				<h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
 					Login
 				</h2>
+				{error && (
+					<p className="text-red-500 text-center mb-4">
+						{error}
+					</p>
+				)}
 				<form onSubmit={handleLogin}>
 					<div className="mb-4">
 						<label
