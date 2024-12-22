@@ -257,9 +257,10 @@ export const getCart = async (req, res) => {
 		}).populate("products.product");
 
 		if (!order) {
-			return res
-				.status(404)
-				.json({ message: "No items in the cart" }); // Empty cart
+			return res.json({
+				cart: [],
+				message: "No items in the cart",
+			}); // Empty cart
 		}
 
 		// Calculate total price for the cart
@@ -323,5 +324,50 @@ export const getProductsDetails = async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Server error" });
+	}
+};
+
+export const updateOrderStatus = async (req, res) => {
+	try {
+		const userId = req.userId;
+		const { walletAddress, transactionHash } = req.body;
+
+		// Validate payment details
+		if (!walletAddress || walletAddress.length <= 5) {
+			return res.status(400).json({
+				message:
+					"Invalid wallet address. It must be more than 5 characters.",
+			});
+		}
+
+		if (!transactionHash || transactionHash.length <= 5) {
+			return res.status(400).json({
+				message:
+					"Invalid transaction hash. It must be more than 5 characters.",
+			});
+		}
+
+		// Find an order with status "Cart" for the logged-in user and update it to "Pending"
+		const updatedOrder = await Order.findOneAndUpdate(
+			{ user: userId, status: "Cart" }, // Find criteria
+			{ status: "Pending", walletAddress, transactionHash }, // Update to "Pending" and save payment details
+			{ new: true } // Return the updated document
+		);
+
+		if (!updatedOrder) {
+			return res
+				.status(404)
+				.json({ message: "No cart found for the user." });
+		}
+
+		res.status(200).json({
+			message: "Order status updated successfully.",
+			order: updatedOrder,
+		});
+	} catch (error) {
+		console.error("Error updating order status:", error);
+		res
+			.status(500)
+			.json({ message: "Internal server error." });
 	}
 };

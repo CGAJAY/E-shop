@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../store/useCartStore";
@@ -44,10 +44,16 @@ const Login = () => {
 				navigate("/profile");
 				window.scrollTo(0, 0); // Scrolls to the top of the page
 
+<<<<<<< HEAD
 				// alert("Login successful");
-			} else {
-				setError(data.message);
-			}
+			} 
+=======
+			// Redirect to home page and scroll to the top
+			navigate("/");
+			window.scrollTo(0, 0); // Scrolls to the top of the page
+
+			alert("Login successful");
+>>>>>>> c469db7a7276b4107fa270d8561e93259ea66534
 		} catch (error) {
 			console.error("Login failed:", error.message);
 			// alert("Login failed");
